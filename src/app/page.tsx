@@ -1,6 +1,12 @@
 import { Progress } from "@/components/ui/progress";
 import { Github } from "lucide-react";
 
+
+export const metadata = {
+  title: "Hostito",
+  description: "Hostito - Free open-source WHMCS alternative",
+}
+
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
