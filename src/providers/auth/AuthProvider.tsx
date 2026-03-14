@@ -1,34 +1,59 @@
 'use client'
 
+import { forgotPassword, login, register, resetPassword, verifyEmail } from "@/lib/api/auth";
 import { useMemo, useState } from "react";
 import AuthContext from "./AuthContext";
+import { RegisterUser } from "@/types/auth";
+import { useEffect } from "react";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
+    const [user, setUser] = useState<any>();
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const [user, setUser] = useState<any>(null);
+    useEffect(() => {
+        try {
+            // @ts-ignore
+            setUser(JSON.parse(localStorage.getItem('user')));
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+        }
 
-    const login = async (email: string, password: string) => {
-        setUser({ email, password });
+        return () => {
+            setLoading(false);
+            setUser(null);
+        }
+    }, []);
+
+    const loginHandler = async (email: string, password: string) => {
+        const response = await login(email, password);
+        localStorage.setItem('token', response.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        setUser(response.user);
     };
 
-    const register = async (email: string, password: string) => {
-        setUser({ email, password });
+    const registerHandler = async (user: RegisterUser) => {
+        const response = await register(user);
+        localStorage.setItem('token', response.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        setUser(response.user);
     };
 
-    const forgotPassword = async (email: string) => {
-        setUser({ email });
+    const forgotPasswordHandler = async (email: string) => {
+        return await forgotPassword(email);
     };
 
-    const resetPassword = async (token: string, password: string) => {
-        setUser({ token, password });
+    const resetPasswordHandler = async (token: string, password: string) => {
+        return await resetPassword(token, password);
     };
 
-    const verifyEmail = async (token: string) => {
-        setUser({ token });
+    const verifyEmailHandler = async (token: string) => {
+        return await verifyEmail(token);
     };
 
-    const logout = async () => {
+    const logoutHandler = async () => {
+        localStorage.removeItem('token');
         setUser(null);
     };
 
@@ -36,14 +61,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const auth = useMemo(() => {
         return {
             user,
-            login,
-            register,
-            forgotPassword,
-            resetPassword,
-            verifyEmail,
-            logout,
+            login: loginHandler,
+            register: registerHandler,
+            forgotPassword: forgotPasswordHandler,
+            resetPassword: resetPasswordHandler,
+            verifyEmail: verifyEmailHandler,
+            logout: logoutHandler,
+            loading,
         }
-    }, [user, login, register, forgotPassword, resetPassword, verifyEmail, logout]);
+    }, [user, loginHandler, registerHandler, forgotPasswordHandler, resetPasswordHandler, verifyEmailHandler, logoutHandler]);
 
     return (
         <AuthContext.Provider value={auth} >

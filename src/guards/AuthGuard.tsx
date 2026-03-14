@@ -8,23 +8,37 @@ import { useEffect, useState } from "react";
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 
 
-    const { user } = useAuthContext();
+    const { user, loading: authLoading } = useAuthContext();
     const router = useRouter();
 
     const [loading, setLoading] = useState(true);
     const [value, setValue] = useState(20);
 
     useEffect(() => {
+
+        if (authLoading) {
+            return;
+        }
+
         if (!user) {
+
+            console.log('user not found', user);
             setValue(60);
             setTimeout(() => {
                 router.push('/auth/login');
             }, 1000);
         } else {
+            if (!user.emailVerified) {
+                router.push('/auth/verify-email');
+            }
             setValue(100);
             setLoading(false);
         }
-    }, [user]);
+
+        return () => {
+        }
+
+    }, [user, authLoading]);
 
 
     if (loading) {

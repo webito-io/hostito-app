@@ -15,26 +15,70 @@ import {
     FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useAuthContext } from "@/providers/auth/AuthContext"
+import { RegisterUser } from "@/types/auth"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import z from "zod"
 
 export function Register() {
 
     const router = useRouter();
 
+    const { register } = useAuthContext();
+
+    const { register: registerForm, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterUser>({
+        resolver: zodResolver(
+            z.object({
+                firstName: z.string().optional(),
+                lastName: z.string().optional(),
+                email: z.string().email('Invalid email'),
+                password: z.string().min(6, 'Password must be at least 6 characters long'),
+            })
+        ),
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+        },
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
+    });
+
+    const onSubmit = async (data: RegisterUser) => {
+        try {
+            await register(data);
+            toast.success('Register successful');
+            router.push('/auth/verify-email');
+        } catch (error: any) {
+            toast.error(error.message);
+        }
+    };
+
     return (
         <Card className="w-full max-w-sm mx-auto">
-            <CardHeader>
-                <CardTitle>Create an account</CardTitle>
-                <CardDescription>
-                    Enter your information below to create your account
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
+
+                <CardHeader>
+                    <CardTitle>Create an account</CardTitle>
+                    <CardDescription>
+                        Enter your information below to create your account
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
                     <FieldGroup>
                         <Field>
-                            <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                            <Input id="name" type="text" placeholder="John Doe" required />
+                            <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                            <Input id="firstName" type="text" placeholder="John" required {...registerForm('firstName')} />
+                            {errors.firstName && <p className="text-xs text-destructive">{errors.firstName.message}</p>}
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                            <Input id="lastName" type="text" placeholder="Doe" required {...registerForm('lastName')} />
+                            {errors.lastName && <p className="text-xs text-destructive">{errors.lastName.message}</p>}
                         </Field>
                         <Field>
                             <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -43,6 +87,7 @@ export function Register() {
                                 type="email"
                                 placeholder="m@example.com"
                                 required
+                                {...registerForm('email')}
                             />
                             <FieldDescription>
                                 We&apos;ll use this to contact you. We will not share your email
@@ -51,21 +96,14 @@ export function Register() {
                         </Field>
                         <Field>
                             <FieldLabel htmlFor="password">Password</FieldLabel>
-                            <Input id="password" type="password" required />
-                            <FieldDescription>
-                                Must be at least 8 characters long.
-                            </FieldDescription>
-                        </Field>
-                        <Field>
-                            <FieldLabel htmlFor="confirm-password">
-                                Confirm Password
-                            </FieldLabel>
-                            <Input id="confirm-password" type="password" required />
-                            <FieldDescription>Please confirm your password.</FieldDescription>
+                            <Input id="password" type="password" required {...registerForm('password')} />
+                            {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
                         </Field>
                         <FieldGroup>
                             <Field>
-                                <Button type="submit">Create Account</Button>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Registering...' : 'Register'}
+                                </Button>
                                 {/* <Button variant="outline" type="button">
                                     Sign up with Google
                                 </Button> */}
@@ -75,8 +113,8 @@ export function Register() {
                             </Field>
                         </FieldGroup>
                     </FieldGroup>
-                </form>
-            </CardContent>
+                </CardContent>
+            </form>
         </Card>
     )
 }
