@@ -30,7 +30,7 @@ export function Login() {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterUser>({
         resolver: zodResolver(
             z.object({
-                email: z.email('Invalid email'),
+                email: z.string().email('Invalid email'),
                 password: z.string().min(6, 'Password must be at least 6 characters long'),
             })
         ),
