@@ -15,11 +15,11 @@ import { Label } from "@/components/ui/label"
 import { useAuthContext } from "@/providers/auth/AuthContext"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-import { RegisterUser } from "@/types/auth"
-import z from "zod"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { useCallback } from "react"
+import { LoginUser } from "@/types/auth"
 
 export function Login() {
 
@@ -27,7 +27,8 @@ export function Login() {
 
     const { login } = useAuthContext();
 
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterUser>({
+
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginUser>({
         resolver: zodResolver(
             z.object({
                 email: z.string().email('Invalid email'),
@@ -42,7 +43,7 @@ export function Login() {
         reValidateMode: 'onChange',
     });
 
-    const onSubmit = useCallback(async (data: RegisterUser) => {
+    const onSubmit = useCallback(async (data: LoginUser) => {
         try {
             await login(data.email, data.password);
             toast.success('Login successful');
