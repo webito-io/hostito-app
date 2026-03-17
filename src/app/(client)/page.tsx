@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 
 export const metadata = {
     title: 'Client',
@@ -5,7 +6,7 @@ export const metadata = {
 }
 
 export function ClientPage() {
-    return <div>Client</div>
+    return redirect('/dashboard');
 }
 
 export default ClientPage;
