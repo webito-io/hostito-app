@@ -1,4 +1,5 @@
 import { ResetPassword } from "@/components/auth/ResetPassword";
+import { Suspense } from "react";
 
 export const metadata = {
     title: "Reset Password",
@@ -6,7 +7,11 @@ export const metadata = {
 }
 
 export function ResetPasswordPage() {
-    return <ResetPassword />
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ResetPassword />
+        </Suspense>
+    )
 }
 
 export default ResetPasswordPage;
