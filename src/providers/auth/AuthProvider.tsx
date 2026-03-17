@@ -1,24 +1,46 @@
 'use client'
 
-import { forgotPassword, login, register, resetPassword, verifyEmail } from "@/lib/api/auth";
+import { forgotPassword, login, me, register, resendVerificationEmail, resetPassword, verifyEmail } from "@/lib/api/auth";
 import { useMemo, useState } from "react";
 import AuthContext from "./AuthContext";
 import { RegisterUser } from "@/types/auth";
 import { useEffect } from "react";
+import { getCookies, setCookies } from "@/lib/cookies";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [user, setUser] = useState<any>();
     const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        try {
-            // @ts-ignore
-            setUser(JSON.parse(localStorage.getItem('user')));
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
+    const router = useRouter();
+
+    const meHandler = useCallback(async () => {
+        const token = await getCookies('token');
+        if (!token) {
+            return null;
         }
+        try {
+            const response = await me(token);
+            setUser(response);
+            return response;
+        } catch (error) {
+            return null;
+        }
+    }, []);
+
+    useEffect(() => {
+        const init = async () => {
+            const cachedUser = localStorage.getItem('user');
+            if (cachedUser) setUser(JSON.parse(cachedUser));
+
+            await meHandler();
+            setLoading(false);
+        };
+
+        init();
 
         return () => {
             setLoading(false);
@@ -27,16 +49,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const loginHandler = async (email: string, password: string) => {
+
         const response = await login(email, password);
-        localStorage.setItem('token', response.access_token);
+
+        setCookies('token', response.access_token)
+
         localStorage.setItem('user', JSON.stringify(response.user));
+
         setUser(response.user);
+
     };
 
     const registerHandler = async (user: RegisterUser) => {
+
         const response = await register(user);
-        localStorage.setItem('token', response.access_token);
+
+        setCookies('token', response.access_token)
+
         localStorage.setItem('user', JSON.stringify(response.user));
+
         setUser(response.user);
     };
 
@@ -52,10 +83,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return await verifyEmail(token);
     };
 
+    const resendVerificationEmailHandler = async () => {
+        return await resendVerificationEmail(user?.email);
+    };
+
     const logoutHandler = async () => {
         localStorage.removeItem('token');
+        router.push('/auth/login');
         setUser(null);
     };
+
 
 
     const auth = useMemo(() => {
@@ -66,10 +103,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             forgotPassword: forgotPasswordHandler,
             resetPassword: resetPasswordHandler,
             verifyEmail: verifyEmailHandler,
+            resendVerificationEmail: resendVerificationEmailHandler,
             logout: logoutHandler,
+            refresh: meHandler,
             loading,
         }
-    }, [user, loginHandler, registerHandler, forgotPasswordHandler, resetPasswordHandler, verifyEmailHandler, logoutHandler]);
+    }, [user, loginHandler, registerHandler, forgotPasswordHandler, resetPasswordHandler, verifyEmailHandler, logoutHandler, meHandler]);
 
     return (
         <AuthContext.Provider value={auth} >
