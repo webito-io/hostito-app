@@ -48,10 +48,10 @@ export async function resendVerificationEmail(email: string) {
     return res.data;
 }
 
-export async function me() {
+export async function me(token: string) {
     const response = await instance.get('/auth/me', {
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${token}`,
         },
     });
     return response.data;
