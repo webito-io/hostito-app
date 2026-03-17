@@ -1,11 +1,10 @@
-import { getCookie, setCookie } from "cookies-next";
+import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 export function setCookies(name: string, value: string) {
     setCookie(name, value, {
         maxAge: 60 * 60 * 24 * 7,
         path: '/',
-        httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
     });
 }
@@ -13,8 +12,11 @@ export function setCookies(name: string, value: string) {
 export function getCookies(name: string) {
     return getCookie(name, {
         path: '/',
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
+    });
+}
+
+export function removeCookies(name: string) {
+    deleteCookie(name, {
+        path: '/',
     });
 }

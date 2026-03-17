@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import AuthContext from "./AuthContext";
 import { RegisterUser } from "@/types/auth";
 import { useEffect } from "react";
-import { getCookies, setCookies } from "@/lib/cookies";
+import { getCookies, removeCookies, setCookies } from "@/lib/cookies";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 
@@ -18,15 +18,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
 
     const meHandler = useCallback(async () => {
-        const token = await getCookies('token');
+        const token = await getCookies('token') as string;
         if (!token) {
+            setUser(null);
+            localStorage.removeItem('user');
             return null;
         }
         try {
             const response = await me(token);
             setUser(response);
+            localStorage.setItem('user', JSON.stringify(response));
             return response;
         } catch (error) {
+            setUser(null);
+            localStorage.removeItem('user');
+            removeCookies('token');
             return null;
         }
     }, []);
@@ -41,12 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         };
 
         init();
-
-        return () => {
-            setLoading(false);
-            setUser(null);
-        }
-    }, []);
+    }, [meHandler]);
 
     const loginHandler = async (email: string, password: string) => {
 
@@ -88,9 +89,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const logoutHandler = async () => {
-        localStorage.removeItem('token');
-        router.push('/auth/login');
+        removeCookies('token');
+        localStorage.removeItem('user');
         setUser(null);
+        router.push('/auth/login');
     };
 
 
