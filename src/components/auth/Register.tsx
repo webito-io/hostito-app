@@ -100,15 +100,15 @@ export function Register() {
                             {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
                         </Field>
                         <FieldGroup>
-                            <Field>
+                            <Field className="flex flex-col gap-4">
                                 <Button type="submit" disabled={isSubmitting}>
                                     {isSubmitting ? 'Registering...' : 'Register'}
                                 </Button>
                                 {/* <Button variant="outline" type="button">
                                     Sign up with Google
                                 </Button> */}
-                                <FieldDescription className="px-6 text-center">
-                                    Already have an account? <Button variant="link" onClick={() => router.push('/auth/login')}>Sign in</Button>
+                                <FieldDescription className="text-xs w-full text-start ">
+                                    Already have an account? <a className="underline-offset-4 hover:underline cursor-pointer" onClick={() => router.push('/auth/login')}>Sign in</a>
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>

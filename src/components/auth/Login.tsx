@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { useCallback } from "react"
 import { LoginUser } from "@/types/auth"
+import { FieldDescription } from "../ui/field"
 
 export function Login() {
 
@@ -62,9 +63,6 @@ export function Login() {
                     <CardDescription>
                         Enter your email below to login to your account
                     </CardDescription>
-                    <CardAction>
-                        <Button variant="link" onClick={() => router.push('/auth/register')}>Sign Up</Button>
-                    </CardAction>
                 </CardHeader>
                 <CardContent className="my-5">
                     <div className="flex flex-col gap-6">
@@ -97,10 +95,13 @@ export function Login() {
                         </div>
                     </div>
                 </CardContent>
-                <CardFooter className="flex-col gap-2">
+                <CardFooter className="flex-col gap-3">
                     <Button type="submit" disabled={isSubmitting} className="w-full">
                         {isSubmitting ? 'Logging in...' : 'Login'}
                     </Button>
+                    <FieldDescription className="text-xs text-start w-full">
+                        You don't have an account? <a className="text-xs underline-offset-4 hover:underline cursor-pointer" onClick={() => router.push('/auth/register')}>Sign up</a>
+                    </FieldDescription>
                     {/* <Button variant="outline" className="w-full">
                     Login with Google
                 </Button> */}
