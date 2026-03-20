@@ -1,6 +1,6 @@
 'use client'
 
-import { forgotPassword, login, me, register, resendVerificationEmail, resetPassword, verifyEmail } from "@/lib/api/auth";
+import { authService } from "@/lib/api/auth";
 import { useMemo, useState } from "react";
 import AuthContext from "./AuthContext";
 import { RegisterUser } from "@/types/auth";
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             return null;
         }
         try {
-            const response = await me(token);
+            const response = await authService.me();
             setUser(response);
             localStorage.setItem('user', JSON.stringify(response));
             return response;
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const loginHandler = async (email: string, password: string) => {
 
-        const response = await login(email, password);
+        const response = await authService.login({ email, password });
 
         setCookies('token', response.access_token)
 
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const registerHandler = async (user: RegisterUser) => {
 
-        const response = await register(user);
+        const response = await authService.register(user);
 
         setCookies('token', response.access_token)
 
@@ -73,19 +73,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const forgotPasswordHandler = async (email: string) => {
-        return await forgotPassword(email);
+        return await authService.forgotPassword(email);
     };
 
     const resetPasswordHandler = async (token: string, password: string) => {
-        return await resetPassword(token, password);
+        return await authService.resetPassword(token, password);
     };
 
     const verifyEmailHandler = async (token: string) => {
-        return await verifyEmail(token);
+        return await authService.verifyEmail(token);
     };
 
     const resendVerificationEmailHandler = async () => {
-        return await resendVerificationEmail(user?.email);
+        return await authService.resendVerificationEmail(user?.email);
     };
 
     const logoutHandler = async () => {

@@ -3,8 +3,8 @@
 import * as React from "react"
 import { usePathname } from "next/navigation"
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/layout/nav-main"
+import { NavUser } from "@/components/layout/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
@@ -27,7 +27,7 @@ import {
   PlusCircleIcon,
   GlobeIcon
 } from "lucide-react"
-import { LogoTypo } from "./logo/typo"
+import { LogoTypo } from "../logo/typo"
 
 // This is sample data.
 const data = {
@@ -85,10 +85,6 @@ const data = {
           {
             title: "Payments",
             url: "/admin/payments",
-          },
-          {
-            title: "Carts",
-            url: "/admin/carts",
           },
           {
             title: "Coupons",
@@ -166,8 +162,8 @@ const data = {
             url: "/admin/payment-gateways",
           },
           {
-            title: "Email Templates",
-            url: "/admin/email-templates",
+            title: "Notification Templates",
+            url: "/admin/notification-templates",
           },
         ],
       },

@@ -8,9 +8,7 @@ export const metadata = {
 
 export function ResetPasswordPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <ResetPassword />
-        </Suspense>
+        <ResetPassword />
     )
 }
 
