@@ -17,10 +17,13 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { useAuthContext } from "@/providers/auth/AuthContext"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
 export function VerifyEmail() {
+
+    const router = useRouter();
 
     const { logout, verifyEmail, resendVerificationEmail, user } = useAuthContext();
 
@@ -45,6 +48,7 @@ export function VerifyEmail() {
         try {
             await verifyEmail(otp);
             toast.success('Email verified successfully');
+            router.push('/dashboard');
         } catch (error: any) {
             toast.error(error.message);
         } finally {
