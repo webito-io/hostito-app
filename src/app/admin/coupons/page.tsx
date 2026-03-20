@@ -102,7 +102,7 @@ export default function CouponsPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-8">
-      <PageHeader title="Coupons Management" onAdd={handleCreate} addLabel="Add Coupon" />
+      <PageHeader title="Coupons Management" action={{ label: "Add Coupon", onClick: handleCreate }} />
       <DataTable
         columns={columns}
         data={data}

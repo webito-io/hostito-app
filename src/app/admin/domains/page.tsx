@@ -94,7 +94,7 @@ export default function DomainsPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-8">
-      <PageHeader title="Domains Management" onAdd={handleCreate} addLabel="Add Domain" />
+      <PageHeader title="Domains Management" action={{ label: "Add Domain", onClick: handleCreate }} />
       <DataTable
         columns={columns}
         data={data}

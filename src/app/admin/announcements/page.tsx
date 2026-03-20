@@ -91,7 +91,7 @@ export default function AnnouncementsPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-8">
-      <PageHeader title="Announcements" onAdd={handleCreate} addLabel="Add Announcement" />
+      <PageHeader title="Announcements" action={{ label: "Add Announcement", onClick: handleCreate }} />
       <DataTable
         columns={columns}
         data={data}
