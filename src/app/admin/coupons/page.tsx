@@ -39,7 +39,7 @@ export default function CouponsPage() {
     setLoading(true);
     try {
       const coupons = await couponsService.findAll();
-      setData(coupons);
+      setData(coupons.data);
     } catch (error) {
       toast.error("Failed to fetch coupons");
     } finally {

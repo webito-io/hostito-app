@@ -10,6 +10,7 @@ export interface Product {
   description?: string;
   price: number;
   currencyId: number;
+  categoryId?: number;
   type: ProductType;
   cycle: ProductCycle;
   isActive: boolean;
@@ -25,6 +26,7 @@ export interface CreateProductDto {
   description?: string;
   price: number;
   currencyId: number;
+  categoryId?: number;
   type: ProductType;
   cycle: ProductCycle;
   isActive?: boolean;

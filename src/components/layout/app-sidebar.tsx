@@ -104,6 +104,10 @@ const data = {
             url: "/admin/products",
           },
           {
+            title: "Categories",
+            url: "/admin/products-categories",
+          },
+          {
             title: "Services",
             url: "/admin/services",
           },
@@ -114,6 +118,10 @@ const data = {
           {
             title: "Domains",
             url: "/admin/domains",
+          },
+          {
+            title: "Registrars",
+            url: "/admin/registrars",
           },
           {
             title: "Provisioners",
@@ -150,6 +158,10 @@ const data = {
         ),
         items: [
           {
+            title: "Settings",
+            url: "/admin/settings",
+          },
+          {
             title: "Currencies",
             url: "/admin/currencies",
           },
@@ -165,6 +177,10 @@ const data = {
             title: "Notification Templates",
             url: "/admin/notification-templates",
           },
+          {
+            title: "Notification Providers",
+            url: "/admin/notification-providers",
+          },
         ],
       },
       {
@@ -175,7 +191,7 @@ const data = {
         ),
         items: [
           {
-            title: "Notifications",
+            title: "Notification Logs",
             url: "/admin/notifications",
           },
           {
@@ -203,6 +219,13 @@ const data = {
         url: "/dashboard/order-service",
         icon: (
           <PlusCircleIcon />
+        ),
+      },
+      {
+        title: "Cart",
+        url: "/dashboard/cart",
+        icon: (
+          <ShoppingCartIcon />
         ),
       },
       {

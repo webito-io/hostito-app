@@ -22,10 +22,12 @@ import {
 } from "@/components/ui/sidebar"
 import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
 import { useAuthContext } from "@/providers/auth/AuthContext"
+import { useRouter } from "next/navigation"
 
 export function NavUser() {
   const { user, logout } = useAuthContext()
   const { isMobile } = useSidebar()
+  const router = useRouter()
 
   if (!user) return null
 
@@ -73,28 +75,17 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <SparklesIcon
-                />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheckIcon
-                />
+              <DropdownMenuItem onClick={() => router.push("/dashboard/settings")}>
+                <BadgeCheckIcon />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon
-                />
+              <DropdownMenuItem onClick={() => router.push("/dashboard/invoices")}>
+                <CreditCardIcon />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon
-                />
-                Notifications
+              <DropdownMenuItem onClick={() => router.push("/dashboard/payments")}>
+                <BellIcon />
+                Payments
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

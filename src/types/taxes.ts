@@ -7,6 +7,13 @@ export interface Tax {
   updatedAt: string;
 }
 
+export interface TaxResponse {
+  data: Tax[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export interface CreateTaxDto {
   name: string;
   rate: number;

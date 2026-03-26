@@ -36,7 +36,7 @@ export default function TaxesPage() {
     setLoading(true);
     try {
       const taxes = await taxesService.findAll();
-      setData(taxes);
+      setData(taxes.data);
     } catch (error) {
       toast.error("Failed to fetch taxes");
     } finally {

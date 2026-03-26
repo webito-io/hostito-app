@@ -13,6 +13,14 @@ export interface Coupon {
   updatedAt: string;
 }
 
+export interface CouponResponse {
+  data: Coupon[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+
 export interface CreateCouponDto {
   code: string;
   type: CouponType;
