@@ -5,7 +5,7 @@ export interface Payment {
   status: string;
   orderId: number;
   organizationId: number;
-  gateway?: string | { id: number; name: string };
+  gateway?: { id: number; name: string };
   createdAt: string;
   updatedAt: string;
 }

@@ -13,7 +13,7 @@ const columns: Column<Payment>[] = [
   { key: "id", label: "Tx ID", skeletonWidth: "w-16", render: (p) => <span className="font-mono text-xs">#{p.id}</span> },
   { key: "transactionId", label: "Gateway Ref", skeletonWidth: "w-48", render: (p) => <span className="text-muted-foreground">{p.transactionId || "Pending"}</span> },
   { key: "amount", label: "Amount", skeletonWidth: "w-24", render: (p) => <span className="font-bold text-primary">${p.amount.toFixed(2)}</span> },
-  { key: "gateway", label: "Gateway", skeletonWidth: "w-32", render: (p) => <span className="text-xs uppercase bg-muted px-1.5 py-0.5 rounded">{p.gateway || "N/A"}</span> },
+  { key: "gateway", label: "Gateway", skeletonWidth: "w-32", render: (p) => <span className="text-xs uppercase bg-muted px-1.5 py-0.5 rounded">{p.gateway?.name || "N/A"}</span> },
   { key: "status", label: "Status", skeletonWidth: "w-24", render: (p) => <StatusBadge active={p.status === "COMPLETED"} activeLabel={p.status} inactiveLabel={p.status} /> },
   { key: "createdAt", label: "Date", skeletonWidth: "w-32", render: (p) => <span className="text-xs text-muted-foreground">{new Date(p.createdAt).toLocaleString()}</span> },
 ];

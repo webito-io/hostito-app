@@ -136,14 +136,14 @@ export default function OrganizationsPage() {
   };
 
   const addUserToOrg = (userId: number) => {
-    if (!formData.users.includes(userId)) {
-      setFormData({ ...formData, users: [...formData.users, userId] });
-      setUserSearch("");
-    }
+    const users = formData.users ?? [];
+    if (!users.includes(userId))
+      setFormData({ ...formData, users: [...users, userId] });
+    setUserSearch("");
   };
 
   const removeUserFromOrg = (userId: number) => {
-    setFormData({ ...formData, users: formData.users.filter(id => id !== userId) });
+    setFormData({ ...formData, users: (formData.users ?? []).filter(id => id !== userId) });
   };
 
   const filteredUsers = useMemo(() => {
@@ -155,9 +155,10 @@ export default function OrganizationsPage() {
     );
   }, [allUsers, userSearch]);
 
-  const currentOrgUsers = useMemo(() => {
-    return allUsers.filter(u => formData.users.includes(u.id));
-  }, [allUsers, formData.users]);
+  const currentOrgUsers = useMemo(
+    () => allUsers.filter(u => (formData.users ?? []).includes(u.id)),
+    [allUsers, formData.users]
+  );
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-8">
@@ -227,7 +228,7 @@ export default function OrganizationsPage() {
                 <ComboboxContent>
                   <ComboboxList>
                     {filteredUsers.map((user) => {
-                      const isSelected = formData.users.includes(user.id);
+                      const isSelected = (formData.users ?? []).includes(user.id);
                       return (
                         <ComboboxItem
                           key={user.id}
