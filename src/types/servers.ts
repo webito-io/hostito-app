@@ -12,6 +12,13 @@ export interface Server {
   updatedAt: string;
 }
 
+export interface ServerResponse {
+  data: Server[];
+  page: number;
+  count: number;
+  total: number;
+}
+
 export interface CreateServerDto {
   name: string;
   hostname: string;

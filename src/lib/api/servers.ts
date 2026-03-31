@@ -1,9 +1,9 @@
+import { CreateServerDto, Server, ServerResponse, UpdateServerDto } from '@/types/servers';
 import api from './instance';
-import { Server, CreateServerDto, UpdateServerDto } from '@/types/servers';
 
 export const serversService = {
   findAll: async () => {
-    const response = await api.get<Server[]>('/servers');
+    const response = await api.get<ServerResponse>('/servers');
     return response.data;
   },
 

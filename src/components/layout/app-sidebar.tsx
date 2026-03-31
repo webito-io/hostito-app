@@ -258,8 +258,8 @@ const data = {
             url: "/dashboard/invoices",
           },
           {
-            title: "Payments",
-            url: "/dashboard/payments",
+            title: "Wallet",
+            url: "/dashboard/wallet",
           },
         ],
       },

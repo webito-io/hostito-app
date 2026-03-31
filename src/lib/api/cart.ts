@@ -17,6 +17,10 @@ export const cartService = {
   removeItem: async (id: number) => {
     await instance.delete(`/carts/cart-item/${id}`);
   },
+  addDomain: async (domain: string) => {
+    const response = await instance.post<CartItem>("/carts/domain", { domain });
+    return response.data;
+  },
   checkout: async (gatewayId?: number, coupon?: string) => {
     const response = await instance.post("/orders/checkout", { gatewayId, coupon });
     return response.data;

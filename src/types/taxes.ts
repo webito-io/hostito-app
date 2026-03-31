@@ -2,6 +2,7 @@ export interface Tax {
   id: number;
   name: string;
   rate: number;
+  country?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -17,11 +18,13 @@ export interface TaxResponse {
 export interface CreateTaxDto {
   name: string;
   rate: number;
+  country?: string;
   isActive?: boolean;
 }
 
 export interface UpdateTaxDto {
   name?: string;
   rate?: number;
+  country?: string;
   isActive?: boolean;
 }

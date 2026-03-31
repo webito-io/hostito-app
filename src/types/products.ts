@@ -1,22 +1,37 @@
 import { Currency } from "./currencies";
 
-export type ProductType = 'HOSTING' | 'VPS' | 'DOMAIN' | 'LICENSE' | 'OTHER';
+export type ProductType = "SERVICE" | "DOMAIN";
 
-export type ProductCycle = 'MONTHLY' | 'QUARTERLY' | 'SEMIANNUAL' | 'ANNUAL' | 'BIENNIAL' | 'TRIENNIAL' | 'ONETIME';
+export type VariantAction = "RECURRING" | "REGISTER" | "RENEW" | "TRANSFER" | "SETUP";
+
+export type ProductCycle = "MONTHLY" | "QUARTERLY" | "SEMIANNUAL" | "ANNUAL" | "BIENNIAL" | "TRIENNIAL" | "ONETIME";
+
+export interface ProductVariant {
+  id: number;
+  action: VariantAction;
+  cycle: ProductCycle;
+  price: number;
+}
+
+export interface CreateVariantDto {
+  action: VariantAction;
+  cycle: ProductCycle;
+  price: number;
+}
 
 export interface Product {
   id: number;
   name: string;
   description?: string;
-  price: number;
   currencyId: number;
   categoryId?: number;
   type: ProductType;
-  cycle: ProductCycle;
   isActive: boolean;
-  currency: Currency;
-  module?: string;
+  currency?: Currency;
+  serverId?: number;
+  tld?: string;
   config?: Record<string, any>;
+  variants: ProductVariant[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -24,17 +39,28 @@ export interface Product {
 export interface CreateProductDto {
   name: string;
   description?: string;
-  price: number;
   currencyId: number;
   categoryId?: number;
   type: ProductType;
-  cycle: ProductCycle;
   isActive?: boolean;
-  module?: string;
+  serverId?: number;
+  tld?: string;
   config?: Record<string, any>;
+  variants: CreateVariantDto[];
 }
 
-export interface UpdateProductDto extends Partial<CreateProductDto> { }
+export interface UpdateProductDto {
+  name?: string;
+  description?: string;
+  currencyId?: number;
+  categoryId?: number;
+  type?: ProductType;
+  isActive?: boolean;
+  serverId?: number;
+  tld?: string;
+  config?: Record<string, any>;
+  variants?: CreateVariantDto[];
+}
 
 export interface ProductsResponse {
   data: Product[];

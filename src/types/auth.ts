@@ -24,6 +24,13 @@ export interface User {
     roleId: number;
     organizationId: number;
     emailVerified: boolean;
+    status: string;
+    role?: { id: number; name: string };
+    organization?: {
+        id: number;
+        name: string;
+        currency?: { id: number; code: string; name: string; symbol: string; rate: number; isDefault: boolean; isActive: boolean };
+    };
     createdAt: string;
     updatedAt: string;
 }
