@@ -1,9 +1,9 @@
 import { instance } from "./instance";
-import { Coupon, CreateCouponDto, UpdateCouponDto } from "@/types/coupons";
+import { Coupon, CouponResponse, CreateCouponDto, UpdateCouponDto } from "@/types/coupons";
 
 export const couponsService = {
   findAll: async () => {
-    const response = await instance.get<Coupon[]>("/coupons");
+    const response = await instance.get<CouponResponse>("/coupons");
     return response.data;
   },
   findOne: async (id: number) => {

@@ -4,6 +4,12 @@ import { User } from "./users";
 export interface Organization {
   id: number;
   name: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
   currencyId: number;
   users: User[];
   createdAt?: string;
@@ -14,7 +20,13 @@ export interface Organization {
 export interface CreateOrganizationDto {
   name: string;
   currencyId: number;
-  users: number[];
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  users?: number[];
 }
 
 export interface UpdateOrganizationDto extends Partial<CreateOrganizationDto> { }

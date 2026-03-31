@@ -1,9 +1,9 @@
 import { instance } from "./instance";
-import { Tax, CreateTaxDto, UpdateTaxDto } from "@/types/taxes";
+import { Tax, CreateTaxDto, UpdateTaxDto, TaxResponse } from "@/types/taxes";
 
 export const taxesService = {
   findAll: async () => {
-    const response = await instance.get<Tax[]>("/taxes");
+    const response = await instance.get<TaxResponse>("/taxes");
     return response.data;
   },
   findOne: async (id: number) => {
